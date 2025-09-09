@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DermaScan - Account</title>
+  <link rel="stylesheet" href="../../static/core/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h2>My Account</h2>
+    <form id="accountForm">
+      <input type="text" name="full_name" placeholder="Full Name">
+      <input type="text" name="country" placeholder="Country">
+      <input type="text" name="birthday" placeholder="Birthday">
+      <input type="text" name="gender" placeholder="Gender">
+      <textarea name="medical_conditions" placeholder="Medical Conditions"></textarea>
+      <button type="submit">Save</button>
+    </form>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="home.html"><img src="../../static/core/assets/1.png"></a>
+    <a href="scan.html"><img src="../../static/core/assets/2.png"></a>
+    <a href="articles.html"><img src="../../static/core/assets/3.png"></a>
+    <a href="chat.html"><img src="../../static/core/assets/4.png"></a>
+  </nav>
+
+  <script>
+    const form = document.getElementById("accountForm");
+    async function loadProfile() {
+      const token = localStorage.getItem("access_token");
+      const res = await fetch("http://127.0.0.1:8000/api/users/me/", {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const data = await res.json();
+      form.full_name.value = data.full_name || "";
+      form.country.value = data.country || "";
+      form.birthday.value = data.birthday || "";
+      form.gender.value = data.gender || "";
+      form.medical_conditions.value = data.medical_conditions || "";
+    }
+    loadProfile();
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const token = localStorage.getItem("access_token");
+      const res = await fetch("http://127.0.0.1:8000/api/users/me/", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+        body: JSON.stringify({
+          full_name: form.full_name.value,
+          country: form.country.value,
+          birthday: form.birthday.value,
+          gender: form.gender.value,
+          medical_conditions: form.medical_conditions.value
+        })
+      });
+      if (res.ok) alert("Profile updated!");
+    });
+  </script>
+</body>
+</html>
+

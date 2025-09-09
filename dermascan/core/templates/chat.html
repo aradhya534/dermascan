@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DermaScan - Chat</title>
+  <link rel="stylesheet" href="../../static/core/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Chat with DermaBot</h2>
+    <div id="chatBox" style="height:300px; overflow-y:auto; border:1px solid #ccc; background:#fff; color:#000; padding:10px; margin-bottom:10px;"></div>
+    <input type="text" id="chatInput" placeholder="Type your message">
+    <button id="sendBtn">Send</button>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="{% url 'home' %}"><img src="{% static 'core/assets/1.png' %}"></a>
+    <a href="{% url 'scan' %}"><img src="{% static 'core/assets/2.png' %}"></a>
+    <a href="{% url 'articles' %}"><img src="{% static 'core/assets/3.png' %}"></a>
+    <a href="{% url 'chat' %}"><img src="{% static 'core/assets/4.png' %}"></a>
+  </nav>
+
+  <script>
+    const chatBox = document.getElementById("chatBox");
+    const chatInput = document.getElementById("chatInput");
+    const sendBtn = document.getElementById("sendBtn");
+
+    sendBtn.addEventListener("click", async () => {
+      const msg = chatInput.value.trim();
+      if (!msg) return;
+
+      const token = localStorage.getItem("access_token");
+      const res = await fetch("http://127.0.0.1:8000/api/chat/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+        body: JSON.stringify({ message: msg })
+      });
+      const data = await res.json();
+      chatBox.innerHTML += `<p><strong>You:</strong> ${msg}</p><p><strong>Bot:</strong> ${data.reply}</p>`;
+      chatInput.value = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
+    });
+  </script>
+</body>
+</html>

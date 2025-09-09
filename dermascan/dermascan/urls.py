@@ -1,0 +1,44 @@
+"""
+URL configuration for dermascan project.
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/5.2/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from core.views import UserViewSet, ScanViewSet, ChatMessageViewSet
+
+from django.conf import settings
+from django.conf.urls.static import static
+from core.views import CustomLoginView, home, signup, scan, articles, chat
+from django.contrib.auth import views as auth_views
+
+
+router = DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'scans', ScanViewSet)
+router.register(r'chats', ChatMessageViewSet)
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
+    path('', CustomLoginView.as_view(),name='index'),
+    path('home/', home, name='home'),
+    path('signup/', signup, name='signup'),
+    path('scan/', scan, name='scan'),
+    path('articles/', articles, name='articles'),
+    path('chat/', chat, name='chat')
+]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

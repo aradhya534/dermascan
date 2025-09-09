@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DermaScan - Home</title>
+  <link rel="stylesheet" href="../../static/core/styles.css">
+</head>
+<body>
+  <header>
+    <h2>Welcome, {{username}}</h2>
+  </header>
+
+  <div class="container">
+    <div class="profile">
+      <img src="{% static 'core/assets/profile.png' %}" alt="profile" class="profile-pic">
+      <h3>{{name}}</h3>
+    </div>
+
+    <input type="text" placeholder="Search diseases or symptoms">
+    <button>Upload/Scan Image</button>
+    
+    <h3>Articles about Skin Diseases</h3>
+    <div class="articles">
+      <p>The prevelance of skin diseases<br><a href="https://slcd.lk/assets/img/member-info/journals/volume-4/sljod-v4-p1-6.pdf"></p>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="{% url 'home' %}"><img src="{% static 'core/assets/1.png' %}"></a>
+    <a href="{% url 'scan' %}"><img src="{% static 'core/assets/2.png' %}"></a>
+    <a href="{% url 'articles' %}"><img src="{% static 'core/assets/3.png' %}"></a>
+    <a href="{% url 'chat' %}"><img src="{% static 'core/assets/4.png' %}"></a>
+  </nav>
+</body>
+</html>

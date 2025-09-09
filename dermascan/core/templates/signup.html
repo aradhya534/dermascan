@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DermaScan - Sign Up</title>
+  <link rel="stylesheet" href="../../static/core/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Create Account</h1>
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <form id="signupForm" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="text" placeholder="Name" name="name" required>
+      <input type="email" placeholder="Email" name="email" required>
+      <input type="text" placeholder="Username" name="username" required>
+      <input type="password" placeholder="Password" name="password" required>
+      <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="{% url 'index' %}">Login Here</a></p>
+  </div>
+</body>
+</html>

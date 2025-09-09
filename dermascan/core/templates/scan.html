@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DermaScan - Scan</title>
+  <link rel="stylesheet" href="../../static/core/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Let's Get Your Scan Done!</h2>
+    <input type="file" id="imageInput" accept="image/*">
+    <button id="uploadBtn">Upload / Scan</button>
+    <p id="status"></p>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="{% url 'home' %}"><img src="{% static 'core/assets/1.png' %}"></a>
+    <a href="{% url 'scan' %}"><img src="{% static 'core/assets/2.png' %}"></a>
+    <a href="{% url 'articles' %}"><img src="{% static 'core/assets/3.png' %}"></a>
+    <a href="{% url 'chat' %}"><img src="{% static 'core/assets/4.png' %}"></a>
+  </nav>
+
+  <script>
+    const uploadBtn = document.getElementById("uploadBtn");
+    const imageInput = document.getElementById("imageInput");
+    const status = document.getElementById("status");
+
+    uploadBtn.addEventListener("click", async () => {
+      const file = imageInput.files[0];
+      if (!file) {
+        status.textContent = "Please select an image!";
+        return;
+      }
+
+      const token = localStorage.getItem("access_token"); // JWT from login
+      
+
+      const formData = new FormData();
+      formData.append("image", file);
+
+      status.textContent = "Uploading...";
+      const res = await fetch("http://127.0.0.1:8000/api/scan/", {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${token}` },
+        body: formData
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        localStorage.setItem("last_scan", JSON.stringify(data));
+        window.location.href = "results.html";
+      } else {
+        const err = await res.json();
+        status.textContent = "Error: " + JSON.stringify(err);
+      }
+    });
+  </script>
+</body>
+</html>

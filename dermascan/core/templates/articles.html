@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DermaScan - Articles</title>
+  <link rel="stylesheet" href="../../static/core/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Articles</h2>
+    <div id="articles"></div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="{% url 'home' %}"><img src="{% static 'core/assets/1.png' %}"></a>
+    <a href="{% url 'scan' %}"><img src="{% static 'core/assets/2.png' %}"></a>
+    <a href="{% url 'articles' %}"><img src="{% static 'core/assets/3.png' %}"></a>
+    <a href="{% url 'chat' %}"><img src="{% static 'core/assets/4.png' %}"></a>
+  </nav>
+
+  <script>
+    async function loadArticles() {
+      const token = localStorage.getItem("access_token");
+
+      const res = await fetch("http://127.0.0.1:8000/api/articles/", {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const data = await res.json();
+      const articlesDiv = document.getElementById("articles");
+
+      articlesDiv.innerHTML = data.map(a => `<div class="article"><h3>${a.title}</h3><p>${a.summary}</p></div>`).join("");
+    }
+    loadArticles();
+  </script>
+</body>
+</html>

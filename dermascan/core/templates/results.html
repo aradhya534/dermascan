@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DermaScan - Results</title>
+  <link rel="stylesheet" href="../../static/core/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Scan Results</h2>
+    <div id="results"></div>
+    <button onclick="window.location.href='scan.html'">Scan Again</button>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="home.html"><img src="../../static/core/assets/1.png"></a>
+    <a href="scan.html"><img src="../../static/core/assets/2.png"></a>
+    <a href="articles.html"><img src="../../static/core/assets/3.png"></a>
+    <a href="chat.html"><img src="../../static/core/assets/4.png"></a>
+  </nav>
+
+  <script>
+    const resultsDiv = document.getElementById("results");
+    const scan = JSON.parse(localStorage.getItem("last_scan"));
+
+    if (!scan) {
+      resultsDiv.innerHTML = "<p>No scan data found.</p>";
+    } else {
+      let html = `<p><strong>Condition:</strong> ${scan.predicted_condition}</p>`;
+      html += "<h3>Confidence Scores:</h3><ul>";
+      for (const [key, val] of Object.entries(scan.confidence_scores)) {
+        html += `<li>${key}: ${(val*100).toFixed(2)}%</li>`;
+      }
+      html += "</ul>";
+      resultsDiv.innerHTML = html;
+    }
+  </script>
+</body>
+</html>
