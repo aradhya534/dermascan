@@ -20,7 +20,7 @@
     {% endif %}
     <form id="signupForm" method="post">
       {% csrf_token %}
-      {{ form.as_p }}
+      
       <input type="text" placeholder="Name" name="name" required>
       <input type="email" placeholder="Email" name="email" required>
       <input type="text" placeholder="Username" name="username" required>
