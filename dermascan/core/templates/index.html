@@ -8,8 +8,13 @@
   <link rel="stylesheet" href="../../static/core/styles.css">
 </head>
 <body>
+  <header>
+    <div class="logo">DermaScan</div>
+  </header>
   <div class="container">
     <h1>Welcome to DermaScan!</h1>
+    <img src="assets/login.png">
+    <h2>Log In</h2>
     <form id="loginForm" method="post">
       {% csrf_token %}
       <input type="text" placeholder="Username" name="username" required>
